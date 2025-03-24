@@ -32,6 +32,7 @@ combo_t key_combos[COMBO_COUNT] = {
 #define _LOWER 1
 #define _RAISE 2
 #define _FUNC 3
+#define _MOUSE 4
 
 // For _QWERTY layer
 #define OSM_LCTL OSM(MOD_LCTL)
@@ -40,6 +41,7 @@ combo_t key_combos[COMBO_COUNT] = {
 #define GUI_ENT  GUI_T(KC_ENT)
 #define LOW_TAB  LT(_LOWER, KC_TAB)
 #define RSE_BSP  LT(_RAISE, KC_BSPC)
+#define MSE_SPC  LT(_MOUSE, KC_SPC)
 #define OSM_SFT  OSM(MOD_LSFT)
 
 
@@ -55,7 +57,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
  OSM(MOD_LSFT),   KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                     KC_N    ,KC_M    ,KC_COMM ,KC_DOT  ,KC_SLSH ,OSL_FUN,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                         OSM_LCTL, GUI_ENT, LOW_TAB,   RSE_BSP ,KC_SPC  ,OSM_SFT \
+                                         OSM_LCTL, GUI_ENT, LOW_TAB,   RSE_BSP ,MSE_SPC ,OSM_SFT \
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -65,7 +67,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_1,    KC_2,   KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    _______,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      _______, XXXXXXX , KC_TILD,KC_GRV, KC_LBRC, KC_LCBR,                       KC_RCBR, KC_RBRC, KC_COMM,KC_DOT,  KC_SLSH, _______,\
+      _______, XXXXXXX , KC_TILD,KC_GRV, KC_LBRC, KC_LCBR,                       KC_RCBR, KC_RBRC, KC_COMM,KC_DOT,  KC_BSLS, KC_PIPE,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           KC_TRNS,  KC_TRNS, LOWER,    KC_TRNS, KC_TRNS, KC_COLON \
                                       //`--------------------------'  `--------------------------'
@@ -74,13 +76,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_RAISE] = LAYOUT( \
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      _______, KC_DEL , XXXXXXX, KC_UNDS, KC_PLUS, KC_PGUP,                      XXXXXXX, XXXXXXX, XXXXXXX, KC_BSLS, KC_PIPE,_______,\
+      _______, KC_DEL , XXXXXXX, KC_UNDS, KC_PLUS, KC_PGUP,                      MS_LEFT, MS_DOWN, MS_UP  , MS_RGHT, XXXXXXX,_______,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_HOME, KC_END , KC_MINS, KC_EQL , KC_PGDN,                      KC_LEFT, KC_DOWN, KC_UP  , KC_RGHT, KC_APP ,_______,\
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       _______, KC_LT  , KC_GT  , KC_COPY, KC_PSTE, KC_SCLN,                      KC_MPLY, KC_MPRV, KC_MNXT, KC_VOLD, KC_VOLU,_______,\
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          CTL_ESC, KC_TRNS, XXXXXXX,    RAISE  , KC_TRNS, KC_TRNS\
+                                          CTL_ESC, MS_BTN2, MS_BTN1,    RAISE  , KC_TRNS, KC_TRNS\
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -94,6 +96,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           XXXXXXX, XXXXXXX, XXXXXXX,    XXXXXXX, FUNC   , XXXXXXX\
                                       //`--------------------------'  `--------------------------'
+  ),
+
+
+  [_MOUSE] = LAYOUT( \
+  //,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                    MS_WHLU , MS_WHLL, MS_WHLR, XXXXXXX, XXXXXXX,_______,\
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                     MS_LEFT , MS_DOWN, MS_UP  , MS_RGHT, XXXXXXX,_______,\
+  //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      _______, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                     MS_WHLD , XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,XXXXXXX,\
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          MS_BTN2, MS_BTN1, MS_ACL0,    XXXXXXX, XXXXXXX, XXXXXXX\
+                                      //`--------------------------'  `--------------------------'
   )
 };
 
@@ -102,6 +117,8 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
       case LT(_RAISE, KC_BSPC):
             return TAPPING_TERM_THUMB;
       case LT(_LOWER, KC_TAB):
+            return TAPPING_TERM_THUMB;
+      case LT(_MOUSE, KC_SPC):
             return TAPPING_TERM_THUMB;
       default:
             return TAPPING_TERM;

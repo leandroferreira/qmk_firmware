@@ -91,3 +91,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define ONESHOT_TAP_TOGGLE 3  /* Tapping this number of times holds the key until tapped once again. */
 #define ONESHOT_TIMEOUT 2000  /* Time (in ms) before the one shot key is released */
 
+#define MK_COMBINED
+#define MOUSEKEY_MAX_SPEED 7
+#define MOUSEKEY_TIME_TO_MAX 60
